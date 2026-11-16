@@ -9,7 +9,7 @@
     "dev": "node --watch server.js",
     "check": "node --check server.js && node --check db.js"
   },
-  "engines": { "node": ">=20" },
+  "engines": { "node": ">=22" },
   "dependencies": {
     "@supabase/supabase-js": "^2.57.4",
     "bcryptjs": "^2.4.3",
