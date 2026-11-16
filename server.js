@@ -1,0 +1,69 @@
+'use strict';
+require('dotenv').config();
+const path=require('path');
+const crypto=require('crypto');
+const express=require('express');
+const http=require('http');
+const session=require('express-session');
+const PgSession=require('connect-pg-simple')(session);
+const rateLimit=require('express-rate-limit');
+const multer=require('multer');
+const bcrypt=require('bcryptjs');
+const {Server}=require('socket.io');
+const db=require('./db');
+
+const app=express();
+const server=http.createServer(app);
+const io=new Server(server,{cors:{origin:false}});
+const PORT=Number(process.env.PORT)||3000;
+const ADMIN_USER=process.env.ADMIN_USER||'admin';
+const ADMIN_PASS=process.env.ADMIN_PASS||'';
+const SESSION_SECRET=process.env.SESSION_SECRET||'';
+const MAX_FILE_MB=Math.max(1,Math.min(10,Number(process.env.MAX_FILE_MB)||10));
+if(!ADMIN_PASS||ADMIN_PASS.length<14||SESSION_SECRET.length<32){console.error('Set ADMIN_PASS (at least 14 characters) and SESSION_SECRET (at least 32 characters).');process.exit(1)}
+app.disable('x-powered-by');
+if(process.env.TRUST_PROXY==='true')app.set('trust proxy',1);
+app.use((req,res,next)=>{res.set({'X-Content-Type-Options':'nosniff','X-Frame-Options':'DENY','Referrer-Policy':'no-referrer','Content-Security-Policy':"default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' ws: wss:; object-src 'none'; base-uri 'none'; frame-ancestors 'none'"});next()});
+app.use(express.json({limit:'30kb'}));
+const sessionMiddleware=session({name:'querychat.sid',secret:SESSION_SECRET,resave:false,saveUninitialized:false,store:new PgSession({pool:db.pool,tableName:'user_sessions',createTableIfMissing:true}),cookie:{httpOnly:true,sameSite:'lax',secure:process.env.COOKIE_SECURE==='true',maxAge:7*24*60*60*1000}});
+app.use(sessionMiddleware);io.engine.use(sessionMiddleware);
+app.use((req,res,next)=>{if(/\.html?$/i.test(req.path))return res.status(404).send('Not found');next()});
+app.use(express.static(path.join(__dirname,'public'),{index:false,dotfiles:'ignore'}));
+
+const allowed=new Set(['pdf','png','jpg','jpeg','gif','webp','txt','doc','docx','xls','xlsx','csv','zip']);
+const upload=multer({storage:multer.memoryStorage(),limits:{fileSize:MAX_FILE_MB*1024*1024,files:5},fileFilter:(req,file,cb)=>{const ext=path.extname(file.originalname).slice(1).toLowerCase();if(!allowed.has(ext))return cb(new Error('File type not allowed. Allowed: PDF, images, documents, CSV and ZIP.'));cb(null,true)}}).array('files',5);
+function parseUploads(req,res,next){upload(req,res,err=>{if(err)return res.status(400).json({error:err.code==='LIMIT_FILE_SIZE'?`Each file must be under ${MAX_FILE_MB} MB.`:err.message});next()})}
+function isAdmin(req){return req.session?.role==='admin'}
+function isUser(req){return req.session?.role==='user'&&req.session.userId}
+function requireAdmin(req,res,next){if(isAdmin(req))return next();res.status(401).json({error:'Admin login required.'})}
+async function requireUser(req,res,next){try{if(!isUser(req))return res.status(401).json({error:'Please log in.'});const u=await db.getUserById(req.session.userId);if(!u||u.status!=='approved'){req.session.destroy(()=>{});return res.status(403).json({error:'Your account is not approved.'})}req.currentUser=u;next()}catch(e){next(e)}}
+function noCache(req,res,next){res.set('Cache-Control','no-store');next()}
+function wrap(fn){return(req,res,next)=>Promise.resolve(fn(req,res,next)).catch(next)}
+function emitMessage(userId,message){io.to('admin').emit('message:new',{userId:Number(userId),message});io.to(`user:${userId}`).emit('message:new',{userId:Number(userId),message})}
+function page(name){return(req,res)=>res.sendFile(path.join(__dirname,'public',name))}
+async function storeUploads(userId,files){const saved=[];try{for(const f of files){const ext=path.extname(f.originalname).toLowerCase();const objectPath=`${userId}/${Date.now()}-${crypto.randomBytes(12).toString('hex')}${ext}`;await db.uploadFile(objectPath,f.buffer,f.mimetype);saved.push({original_name:String(f.originalname).replace(/[\\/\u0000-\u001f]/g,'_').slice(0,140),stored_name:objectPath,mime:f.mimetype||'application/octet-stream',size:f.size})}return saved}catch(e){await db.removeFiles(saved.map(x=>x.stored_name));throw e}}
+async function deliverFile(res,f){try{const buffer=await db.downloadFile(f.stored_name);const name=String(f.original_name||'download').replace(/[\r\n"]/g,'_');res.set({'Content-Type':'application/octet-stream','Content-Length':String(buffer.length),'Content-Disposition':`attachment; filename*=UTF-8''${encodeURIComponent(name)}`,'X-Content-Type-Options':'nosniff','Cache-Control':'private, no-store'});res.end(buffer)}catch(e){console.error('File retrieval failed:',e.message);res.status(404).send('File not found') }}
+
+app.get('/',(req,res)=>{if(isAdmin(req))return res.redirect('/admin');if(isUser(req))return res.redirect('/chat');page('index.html')(req,res)});
+app.get('/register',page('register.html'));app.get('/login',page('login.html'));app.get('/pending',page('pending.html'));app.get('/chat',requireUser,page('chat.html'));app.get('/admin',requireAdmin,page('admin.html'));
+const authLimiter=rateLimit({windowMs:15*60*1000,limit:15,standardHeaders:true,legacyHeaders:false});
+app.post('/api/register',authLimiter,wrap(async(req,res)=>{const name=String(req.body.name||'').trim().slice(0,80);const email=String(req.body.email||'').trim().toLowerCase();const password=String(req.body.password||'');if(name.length<2||!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)||password.length<8||password.length>100)return res.status(400).json({error:'Enter a name, valid email and password of at least 8 characters.'});if(await db.getUserByEmail(email))return res.status(409).json({error:'An account with this email already exists.'});const hash=await bcrypt.hash(password,12);const id=await db.createUser(name,email,hash);io.to('admin').emit('users:update');res.status(201).json({ok:true,id})}));
+app.post('/api/login',authLimiter,wrap(async(req,res)=>{const email=String(req.body.email||'').trim().toLowerCase();const password=String(req.body.password||'');if(email===ADMIN_USER.toLowerCase()){const a=crypto.createHash('sha256').update(password).digest();const b=crypto.createHash('sha256').update(ADMIN_PASS).digest();if(crypto.timingSafeEqual(a,b))return req.session.regenerate(err=>{if(err)return res.status(500).json({error:'Login unavailable.'});req.session.role='admin';req.session.save(e=>e?res.status(500).json({error:'Login unavailable.'}):res.json({ok:true,role:'admin'}))})}const u=await db.getUserByEmail(email);if(!u||!(await bcrypt.compare(password,u.password_hash)))return res.status(401).json({error:'Incorrect email or password.'});if(u.status==='pending')return res.status(403).json({error:'Your account is waiting for admin approval.',status:'pending'});if(u.status==='rejected')return res.status(403).json({error:'Your registration was not approved.',status:'rejected'});req.session.regenerate(err=>{if(err)return res.status(500).json({error:'Login unavailable.'});req.session.role='user';req.session.userId=Number(u.id);req.session.save(e=>e?res.status(500).json({error:'Login unavailable.'}):res.json({ok:true,role:'user'}))})}));
+app.get('/api/me',noCache,wrap(async(req,res)=>{if(isAdmin(req))return res.json({role:'admin',name:'Administrator'});if(isUser(req)){const u=await db.getUserById(req.session.userId);if(u&&u.status==='approved')return res.json({role:'user',id:Number(u.id),name:u.name,email:u.email})}res.status(401).json({error:'Not logged in.'})}));
+app.post('/api/logout',(req,res)=>req.session.destroy(()=>{res.clearCookie('querychat.sid');res.json({ok:true})}));
+
+app.get('/api/messages',requireUser,noCache,wrap(async(req,res)=>{await db.markUserRead(req.currentUser.id);res.json({messages:await db.getMessages(req.currentUser.id)})}));
+app.post('/api/messages',requireUser,parseUploads,wrap(async(req,res)=>{const body=String(req.body.message||'').trim().slice(0,5000);const files=req.files||[];if(!body&&!files.length)return res.status(400).json({error:'Write a message or attach a file.'});const stored=await storeUploads(req.currentUser.id,files);try{const msg=await db.addMessage(req.currentUser.id,'user',body,stored);emitMessage(req.currentUser.id,msg);res.status(201).json({message:msg})}catch(e){await db.removeFiles(stored.map(f=>f.stored_name));throw e}}));
+app.get('/api/files/:id',requireUser,wrap(async(req,res)=>{const f=await db.getFile(Number(req.params.id),req.currentUser.id);if(!f)return res.status(404).send('File not found');await deliverFile(res,f)}));
+app.get('/api/admin/users',requireAdmin,noCache,wrap(async(req,res)=>res.json({users:await db.listUsers()})));
+app.post('/api/admin/users/:id/status',requireAdmin,wrap(async(req,res)=>{const id=Number(req.params.id),status=req.body.status;if(!Number.isInteger(id)||!['approved','rejected'].includes(status))return res.status(400).json({error:'Invalid request.'});const u=await db.getUserById(id);if(!u)return res.status(404).json({error:'User not found.'});await db.setStatus(id,status);io.to(`user:${id}`).emit('account:status',{status});io.to('admin').emit('users:update');res.json({ok:true})}));
+app.get('/api/admin/messages/:id',requireAdmin,noCache,wrap(async(req,res)=>{const id=Number(req.params.id),u=await db.getUserById(id);if(!u||u.status!=='approved')return res.status(404).json({error:'Approved user not found.'});await db.markAdminRead(id);res.json({user:{id:Number(u.id),name:u.name,email:u.email},messages:await db.getMessages(id)})}));
+app.post('/api/admin/messages/:id',requireAdmin,parseUploads,wrap(async(req,res)=>{const id=Number(req.params.id),u=await db.getUserById(id);const body=String(req.body.message||'').trim().slice(0,5000),files=req.files||[];if(!u||u.status!=='approved')return res.status(404).json({error:'Approved user not found.'});if(!body&&!files.length)return res.status(400).json({error:'Write a message or attach a file.'});const stored=await storeUploads(id,files);try{const msg=await db.addMessage(id,'admin',body,stored);emitMessage(id,msg);res.status(201).json({message:msg})}catch(e){await db.removeFiles(stored.map(f=>f.stored_name));throw e}}));
+app.get('/api/admin/files/:userId/:fileId',requireAdmin,wrap(async(req,res)=>{const f=await db.getFile(Number(req.params.fileId),Number(req.params.userId));if(!f)return res.status(404).send('File not found');await deliverFile(res,f)}));
+
+io.on('connection',async socket=>{try{const s=socket.request.session;if(s?.role==='admin')socket.join('admin');if(s?.role==='user'&&s.userId){const u=await db.getUserById(s.userId);if(u&&u.status==='approved')socket.join(`user:${u.id}`)}}catch(e){socket.disconnect(true)}});
+app.use((err,req,res,next)=>{console.error(err);if(res.headersSent)return next(err);res.status(500).json({error:'Something went wrong. Please try again.'})});
+app.use((req,res)=>res.status(404).send('Not found'));
+(async()=>{try{await db.init();server.listen(PORT,()=>console.log(`Query Chat running on port ${PORT}`))}catch(e){console.error('Startup failed:',e);process.exit(1)}})();
+function shutdown(){io.close(async()=>{await db.close();process.exit(0)});setTimeout(()=>process.exit(0),5000).unref()}
+process.on('SIGINT',shutdown);process.on('SIGTERM',shutdown);
