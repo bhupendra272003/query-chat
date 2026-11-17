@@ -28,4 +28,4 @@ services:
       - key: TRUST_PROXY
         value: "true"
       - key: MAX_FILE_MB
-        value: "10"
+        value: "50"
