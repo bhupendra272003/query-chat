@@ -115,6 +115,7 @@ async function addGroupMessage(groupId,userId,role,body) { const {rows}=await po
 async function isGroupMember(groupId,userId) { const {rowCount}=await pool.query('SELECT 1 FROM group_members WHERE group_id=$1 AND user_id=$2',[groupId,userId]); return rowCount>0; }
 async function addGroupMembers(groupId,userIds) { for(const id of userIds) await pool.query('INSERT INTO group_members(group_id,user_id,joined_at) VALUES($1,$2,$3) ON CONFLICT DO NOTHING',[groupId,id,Date.now()]); }
 async function deleteGroup(groupId) { await pool.query('DELETE FROM chat_groups WHERE id=$1',[groupId]); }
+async function deleteUser(id) { const {rows}=await pool.query('SELECT stored_name FROM files WHERE user_id=$1',[id]); await pool.query('DELETE FROM users WHERE id=$1',[id]); return rows.map(x=>x.stored_name); }
 async function setStatus(id,status) {
   await pool.query('UPDATE users SET status=$1, approved_at=$2 WHERE id=$3', [status,status==='approved'?Date.now():null,id]);
 }
@@ -171,4 +172,4 @@ async function downloadFile(path) {
 async function removeFiles(paths) {
   if(paths.length) await supabase.storage.from(BUCKET).remove(paths);
 }
-module.exports={pool,init,getUserByEmail,getUserById,createUser,listUsers,setStatus,setUserPassword,changeUserPassword,listGroups,createGroup,getUserGroups,getGroupMembers,getGroupMessages,addGroupMessage,isGroupMember,addGroupMembers,deleteGroup,addMessage,getMessages,listContacts,getDirectMessages,addDirectMessage,getFile,markAdminRead,markUserRead,uploadFile,downloadFile,removeFiles,close:()=>pool.end()};
+module.exports={pool,init,getUserByEmail,getUserById,createUser,listUsers,setStatus,setUserPassword,changeUserPassword,listGroups,createGroup,getUserGroups,getGroupMembers,getGroupMessages,addGroupMessage,isGroupMember,addGroupMembers,deleteGroup,deleteUser,addMessage,getMessages,listContacts,getDirectMessages,addDirectMessage,getFile,markAdminRead,markUserRead,uploadFile,downloadFile,removeFiles,close:()=>pool.end()};
