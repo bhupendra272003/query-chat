@@ -39,6 +39,10 @@ A private, WhatsApp/Instagram-DM-style chat website with admin-approved accounts
 7. Deploy. On first startup, the app creates its required PostgreSQL tables and the private `query-chat-files` Storage bucket.
 8. Open the deployed URL and sign in as admin using username `admin` and the `ADMIN_PASS` you set. Users can register and will remain pending until approved.
 
+## Backups and recovery
+
+For important workspaces, export the PostgreSQL database regularly from the Supabase project using its supported database backup/export tools. Keep encrypted copies outside the repository, test restores in a separate project, and never place database credentials or service-role keys in GitHub. Supabase plan-level backup retention and point-in-time recovery depend on the active plan; verify the current project settings rather than assuming automatic backups are enabled. Supabase Storage files should also be included in a separate backup/export process because a PostgreSQL dump contains file metadata, not the stored file contents.
+
 ## Local development
 
 1. Install Node.js 22 or newer.
