@@ -86,7 +86,7 @@ async function getUserByEmail(email) {
   return rows[0];
 }
 async function getUserById(id) {
-  const { rows } = await pool.query('SELECT id,name,email,status,created_at,approved_at,last_read_user_msg,last_read_admin_msg FROM users WHERE id=$1', [id]);
+  const { rows } = await pool.query('SELECT id,name,email,status,created_at,approved_at,last_read_user_msg,last_read_admin_msg,password_reset_required FROM users WHERE id=$1', [id]);
   return rows[0];
 }
 async function createUser(name,email,hash) {
