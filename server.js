@@ -19,7 +19,7 @@ const PORT=Number(process.env.PORT)||3000;
 const ADMIN_USER=process.env.ADMIN_USER||'admin';
 const ADMIN_PASS=process.env.ADMIN_PASS||'';
 const SESSION_SECRET=process.env.SESSION_SECRET||'';
-const MAX_FILE_MB=Math.max(1,Math.min(10,Number(process.env.MAX_FILE_MB)||10));
+const MAX_FILE_MB=Math.max(1,Math.min(50,Number(process.env.MAX_FILE_MB)||50));
 if(!ADMIN_PASS||ADMIN_PASS.length<14||SESSION_SECRET.length<32){console.error('Set ADMIN_PASS (at least 14 characters) and SESSION_SECRET (at least 32 characters).');process.exit(1)}
 app.disable('x-powered-by');
 if(process.env.TRUST_PROXY==='true')app.set('trust proxy',1);
@@ -30,7 +30,7 @@ app.use(sessionMiddleware);io.engine.use(sessionMiddleware);
 app.use((req,res,next)=>{if(/\.html?$/i.test(req.path))return res.status(404).send('Not found');next()});
 app.use(express.static(path.join(__dirname,'public'),{index:false,dotfiles:'ignore'}));
 
-const allowed=new Set(['pdf','png','jpg','jpeg','gif','webp','txt','doc','docx','xls','xlsx','csv','zip']);
+const allowed=new Set(['pdf','png','jpg','jpeg','gif','webp','txt','md','rtf','doc','docx','xls','xlsx','xlsm','csv','tsv','zip','7z','py','pyw','ipynb','sql','db','sqlite','json','jsonl','xml','yaml','yml','toml','ini','log','pbix','pbit','parquet','feather','orc','dax','m','pq','js','ts','html','css','java','c','cpp','h','hpp','r','sh','bat']);
 const upload=multer({storage:multer.memoryStorage(),limits:{fileSize:MAX_FILE_MB*1024*1024,files:5},fileFilter:(req,file,cb)=>{const ext=path.extname(file.originalname).slice(1).toLowerCase();if(!allowed.has(ext))return cb(new Error('File type not allowed. Allowed: PDF, images, documents, CSV and ZIP.'));cb(null,true)}}).array('files',5);
 function parseUploads(req,res,next){upload(req,res,err=>{if(err)return res.status(400).json({error:err.code==='LIMIT_FILE_SIZE'?`Each file must be under ${MAX_FILE_MB} MB.`:err.message});next()})}
 function isAdmin(req){return req.session?.role==='admin'}
