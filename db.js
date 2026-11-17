@@ -48,6 +48,8 @@ async function init() {
       body TEXT NOT NULL, created_at BIGINT NOT NULL
     );
     CREATE INDEX IF NOT EXISTS idx_group_messages ON group_messages(group_id,id);
+    CREATE TABLE IF NOT EXISTS direct_messages (id BIGSERIAL PRIMARY KEY, sender_id BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE, recipient_id BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE, body TEXT NOT NULL, created_at BIGINT NOT NULL);
+    CREATE INDEX IF NOT EXISTS idx_direct_pair ON direct_messages(sender_id,recipient_id,id);
     CREATE TABLE IF NOT EXISTS messages (
       id BIGSERIAL PRIMARY KEY,
       user_id BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
@@ -141,6 +143,11 @@ async function getMessages(userId) {
     FROM messages m LEFT JOIN files f ON f.message_id=m.id WHERE m.user_id=$1 GROUP BY m.id ORDER BY m.id`,[userId]);
   return rows.map(m=>({...m,id:Number(m.id),user_id:Number(m.user_id),files:m.files.map(f=>({...f,id:Number(f.id),size:Number(f.size)}))}));
 }
+
+async function listContacts(userId) { const {rows}=await pool.query("SELECT id,name,email FROM users WHERE status='approved' AND id<>$1 ORDER BY name",[userId]);return rows.map(x=>({...x,id:Number(x.id)})); }
+async function getDirectMessages(userId,otherId) { const {rows}=await pool.query("SELECT id,sender_id,recipient_id,body,created_at FROM direct_messages WHERE (sender_id=$1 AND recipient_id=$2) OR (sender_id=$2 AND recipient_id=$1) ORDER BY id",[userId,otherId]);return rows.map(x=>({...x,id:Number(x.id),sender_id:Number(x.sender_id),recipient_id:Number(x.recipient_id)})); }
+async function addDirectMessage(senderId,recipientId,body) { const {rows}=await pool.query("INSERT INTO direct_messages(sender_id,recipient_id,body,created_at) VALUES($1,$2,$3,$4) RETURNING id,sender_id,recipient_id,body,created_at",[senderId,recipientId,body,Date.now()]);const x=rows[0];return {...x,id:Number(x.id),sender_id:Number(x.sender_id),recipient_id:Number(x.recipient_id)}; }
+
 async function getFile(id,userId) {
   const { rows }=await pool.query('SELECT * FROM files WHERE id=$1 AND user_id=$2',[id,userId]);
   return rows[0];
@@ -164,4 +171,4 @@ async function downloadFile(path) {
 async function removeFiles(paths) {
   if(paths.length) await supabase.storage.from(BUCKET).remove(paths);
 }
-module.exports={pool,init,getUserByEmail,getUserById,createUser,listUsers,setStatus,setUserPassword,changeUserPassword,listGroups,createGroup,getUserGroups,getGroupMembers,getGroupMessages,addGroupMessage,isGroupMember,addGroupMembers,deleteGroup,addMessage,getMessages,getFile,markAdminRead,markUserRead,uploadFile,downloadFile,removeFiles,close:()=>pool.end()};
+module.exports={pool,init,getUserByEmail,getUserById,createUser,listUsers,setStatus,setUserPassword,changeUserPassword,listGroups,createGroup,getUserGroups,getGroupMembers,getGroupMessages,addGroupMessage,isGroupMember,addGroupMembers,deleteGroup,addMessage,getMessages,listContacts,getDirectMessages,addDirectMessage,getFile,markAdminRead,markUserRead,uploadFile,downloadFile,removeFiles,close:()=>pool.end()};
