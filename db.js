@@ -50,6 +50,15 @@ async function init() {
     CREATE INDEX IF NOT EXISTS idx_group_messages ON group_messages(group_id,id);
     CREATE TABLE IF NOT EXISTS direct_messages (id BIGSERIAL PRIMARY KEY, sender_id BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE, recipient_id BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE, body TEXT NOT NULL, created_at BIGINT NOT NULL);
     CREATE INDEX IF NOT EXISTS idx_direct_pair ON direct_messages(sender_id,recipient_id,id);
+    CREATE TABLE IF NOT EXISTS shared_files (
+      id BIGSERIAL PRIMARY KEY, conversation_type VARCHAR(8) NOT NULL CHECK(conversation_type IN ('direct','group')),
+      message_id BIGINT NOT NULL, owner_user_id BIGINT REFERENCES users(id) ON DELETE SET NULL,
+      original_name TEXT NOT NULL, stored_name TEXT NOT NULL UNIQUE, mime TEXT NOT NULL, size BIGINT NOT NULL, created_at BIGINT NOT NULL
+    );
+    CREATE INDEX IF NOT EXISTS idx_shared_files_message ON shared_files(conversation_type,message_id);
+    CREATE TABLE IF NOT EXISTS user_preferences (user_id BIGINT PRIMARY KEY REFERENCES users(id) ON DELETE CASCADE, theme VARCHAR(12) NOT NULL DEFAULT 'dark', status_text VARCHAR(80) NOT NULL DEFAULT '', updated_at BIGINT NOT NULL);
+    CREATE TABLE IF NOT EXISTS activity_logs (id BIGSERIAL PRIMARY KEY, actor_role VARCHAR(8) NOT NULL, actor_user_id BIGINT, action VARCHAR(80) NOT NULL, target_type VARCHAR(24) NOT NULL DEFAULT '', target_id BIGINT, details JSONB NOT NULL DEFAULT '{}'::jsonb, created_at BIGINT NOT NULL);
+    CREATE INDEX IF NOT EXISTS idx_activity_logs_created ON activity_logs(created_at DESC);
     CREATE TABLE IF NOT EXISTS messages (
       id BIGSERIAL PRIMARY KEY,
       user_id BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
@@ -148,6 +157,13 @@ async function listContacts(userId) { const {rows}=await pool.query("SELECT id,n
 async function getDirectMessages(userId,otherId) { const {rows}=await pool.query("SELECT id,sender_id,recipient_id,body,created_at FROM direct_messages WHERE (sender_id=$1 AND recipient_id=$2) OR (sender_id=$2 AND recipient_id=$1) ORDER BY id",[userId,otherId]);return rows.map(x=>({...x,id:Number(x.id),sender_id:Number(x.sender_id),recipient_id:Number(x.recipient_id)})); }
 async function addDirectMessage(senderId,recipientId,body) { const {rows}=await pool.query("INSERT INTO direct_messages(sender_id,recipient_id,body,created_at) VALUES($1,$2,$3,$4) RETURNING id,sender_id,recipient_id,body,created_at",[senderId,recipientId,body,Date.now()]);const x=rows[0];return {...x,id:Number(x.id),sender_id:Number(x.sender_id),recipient_id:Number(x.recipient_id)}; }
 
+async function addSharedFiles(type,messageId,ownerId,files) { for(const f of files) await pool.query("INSERT INTO shared_files(conversation_type,message_id,owner_user_id,original_name,stored_name,mime,size,created_at) VALUES($1,$2,$3,$4,$5,$6,$7,$8)",[type,messageId,ownerId,f.original_name,f.stored_name,f.mime,f.size,Date.now()]); }
+async function getSharedFiles(type,ids) { if(!ids.length)return {}; const {rows}=await pool.query("SELECT id,message_id,original_name,mime,size FROM shared_files WHERE conversation_type=$1 AND message_id=ANY($2::bigint[]) ORDER BY id",[type,ids]); const out={}; for(const f of rows){(out[f.message_id] ||= []).push({...f,id:Number(f.id),message_id:Number(f.message_id),size:Number(f.size)})} return out; }
+async function getSharedFile(id) { const {rows}=await pool.query("SELECT * FROM shared_files WHERE id=$1",[id]); return rows[0]; }
+async function logActivity(role,userId,action,targetType='',targetId=null,details={}) { await pool.query("INSERT INTO activity_logs(actor_role,actor_user_id,action,target_type,target_id,details,created_at) VALUES($1,$2,$3,$4,$5,$6,$7)",[role,userId,action,targetType,targetId,JSON.stringify(details),Date.now()]); }
+async function listActivity(limit=100) { const {rows}=await pool.query("SELECT * FROM activity_logs ORDER BY id DESC LIMIT $1",[Math.min(200,Math.max(1,limit))]); return rows; }
+async function getPreferences(userId) { const {rows}=await pool.query("SELECT theme,status_text FROM user_preferences WHERE user_id=$1",[userId]); return rows[0]||{theme:'dark',status_text:''}; }
+async function savePreferences(userId,theme,statusText) { await pool.query("INSERT INTO user_preferences(user_id,theme,status_text,updated_at) VALUES($1,$2,$3,$4) ON CONFLICT(user_id) DO UPDATE SET theme=EXCLUDED.theme,status_text=EXCLUDED.status_text,updated_at=EXCLUDED.updated_at",[userId,theme,statusText,Date.now()]); }
 async function getFile(id,userId) {
   const { rows }=await pool.query('SELECT * FROM files WHERE id=$1 AND user_id=$2',[id,userId]);
   return rows[0];
@@ -171,4 +187,4 @@ async function downloadFile(path) {
 async function removeFiles(paths) {
   if(paths.length) await supabase.storage.from(BUCKET).remove(paths);
 }
-module.exports={pool,init,getUserByEmail,getUserById,createUser,listUsers,setStatus,setUserPassword,changeUserPassword,listGroups,createGroup,getUserGroups,getGroupMembers,getGroupMessages,addGroupMessage,isGroupMember,addGroupMembers,deleteGroup,deleteUser,addMessage,getMessages,listContacts,getDirectMessages,addDirectMessage,getFile,markAdminRead,markUserRead,uploadFile,downloadFile,removeFiles,close:()=>pool.end()};
+module.exports={pool,init,addSharedFiles,getSharedFiles,getSharedFile,logActivity,listActivity,getPreferences,savePreferences,getUserByEmail,getUserById,createUser,listUsers,setStatus,setUserPassword,changeUserPassword,listGroups,createGroup,getUserGroups,getGroupMembers,getGroupMessages,addGroupMessage,isGroupMember,addGroupMembers,deleteGroup,deleteUser,addMessage,getMessages,listContacts,getDirectMessages,addDirectMessage,getFile,markAdminRead,markUserRead,uploadFile,downloadFile,removeFiles,close:()=>pool.end()};
