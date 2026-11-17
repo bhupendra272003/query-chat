@@ -14,7 +14,7 @@ A private, WhatsApp/Instagram-DM-style chat website with admin-approved accounts
 - Direct conversations are restricted to the two approved participants
 - Modern responsive admin and user workspaces
 - Real-time message updates using Socket.IO
-- File attachments in both directions (up to 10 MB per file by default)
+- Private file attachments in admin-user conversations for Python, SQL, PBIX/PBIT, Jupyter notebooks, CSV/Excel, JSON, Parquet, documents, images, ZIP and common source files (up to 50 MB per file)
 - Private Supabase Storage bucket; files are downloaded only through authenticated routes
 - PostgreSQL storage for accounts, messages, file metadata, and sessions
 - Render Blueprint included for deployment
