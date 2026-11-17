@@ -6,9 +6,12 @@ A private, WhatsApp/Instagram-DM-style chat website with admin-approved accounts
 - One administrator login configured through environment variables
 - User registration with pending / approved / rejected states
 - Private conversation between each approved user and the administrator
+- Private one-to-one user-to-user messaging between approved members
+- Member directory with a New Chat entry point and real-time direct messages
 - Admin can set a temporary password for any approved member; the member must change it at next login
 - Admin-created groups with approved-member selection and group messaging
 - Group spaces appear only for members invited by the administrator
+- Direct conversations are restricted to the two approved participants
 - Modern responsive admin and user workspaces
 - Real-time message updates using Socket.IO
 - File attachments in both directions (up to 10 MB per file by default)
