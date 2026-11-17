@@ -31,3 +31,54 @@ body.modern{font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",s
 .new-chat-btn{width:43px;height:43px;border:1px solid #3a4b63;border-radius:15px;background:linear-gradient(135deg,#13b395,#7169eb);color:white;font-size:25px;line-height:1;cursor:pointer;margin:2px 0 10px;box-shadow:0 8px 20px #15a98c30}.contact-list{padding-bottom:12px;border-bottom:1px solid #2c3b53;margin-bottom:10px;max-height:38vh}.contact-bubble{background:#263750;border-color:#3b4a62}.contact-bubble.active{outline:2px solid #6de0c3;outline-offset:2px}.user-rail .rail-caption{font-size:7px}
 
 .delete-user{flex:0 0 27px;width:27px;height:27px;margin-left:5px;background:#542c3a!important;color:#ff9aa9!important;border:1px solid #8a4657!important;font-size:18px;opacity:.9}.delete-user:hover{background:#8b3048!important;color:#fff!important}.person-row{gap:9px}.person-info{min-width:0;flex:1}
+
+/* Query Chat · visual refresh */
+:root{--qc-ink:#17233d;--qc-muted:#7c8ba3;--qc-line:#e7edf5;--qc-glass:#ffffffd9;--qc-accent:#625cf0;--qc-mint:#16b99a;--shadow:0 24px 70px #24365a12}
+.admin-page{background:radial-gradient(ellipse at 8% 0,#dffaf1 0,transparent 32%),radial-gradient(ellipse at 95% 8%,#e9e7ff 0,transparent 32%),#f5f7fc;color:var(--qc-ink)}
+.admin-shell{max-width:1600px;grid-template-columns:248px minmax(0,1fr);gap:0;background:transparent;padding:18px;min-height:100dvh;height:100dvh}
+.admin-sidebar{border:1px solid #ffffff20;border-radius:24px;background:linear-gradient(165deg,#111b31 0%,#1c2945 60%,#202d4d 100%);box-shadow:0 22px 60px #17233d25;padding:23px 15px;color:#fff}
+.brand-logo{background:linear-gradient(140deg,#1ac9a5,#7770f5);box-shadow:0 9px 24px #26b89b40;border-radius:15px}
+.brand-row{padding:0 7px 34px}.brand-row b{font-size:15px;letter-spacing:.2px}.brand-row small{color:#91a3c0;letter-spacing:1.6px}
+.side-label{color:#7185a8;font-size:9px;letter-spacing:2px;padding:0 12px;margin:14px 0 9px}
+.nav-item{border-radius:13px;color:#aebbd0;padding:12px 13px;margin:3px 0;transition:.2s}
+.nav-item:hover{background:#ffffff10;color:#fff}.nav-item.active{background:linear-gradient(100deg,#1ab99a30,#756cf530);color:#fff;box-shadow:inset 3px 0 #3be0bd}
+.nav-count{background:#1db99a;color:#092d32;border-radius:20px;padding:3px 8px}
+.sidebar-profile{background:#ffffff0d;border:1px solid #ffffff12;border-radius:15px;padding:12px;margin-top:auto}
+.profile-avatar{background:linear-gradient(135deg,#17b99a,#6b68e9)}
+.admin-main{padding:5px 0 5px 20px;min-width:0}
+.topbar{height:82px}.eyebrow{color:#8c98b0;font-size:9px;letter-spacing:2px}
+.topbar h1{font-size:27px;letter-spacing:-1px;color:#192642}
+.live-pill{background:#e9faf4;color:#16896f;border:1px solid #d2f3e7}
+.icon-btn{border:1px solid #e2e9f2;background:#fff;border-radius:13px;width:40px;height:40px;color:#53627c}
+.workspace-grid{grid-template-columns:310px minmax(0,1fr);gap:14px;min-height:0}
+.people-panel,.conversation-panel,.groups-view{background:#ffffffd9;backdrop-filter:blur(16px);border:1px solid #fff;border-radius:21px;box-shadow:0 16px 50px #2536570b;overflow:hidden}
+.people-panel{padding:15px}.panel-heading h2{font-size:15px;color:#1b2944}.panel-heading p{font-size:10px;color:#91a0b6}
+.filter-pills{background:#f2f5fa;padding:4px;border-radius:12px;gap:3px}.filter{border-radius:9px;color:#77869e}.filter.active{background:#fff;color:#514ce0;box-shadow:0 3px 12px #1b2b4810}
+.people-list{padding-top:9px}.person-row{border-radius:13px;margin:3px 0;padding:10px}.person-row:hover,.person-row.selected{background:#f0f5ff}.person-row.selected{box-shadow:inset 3px 0 #665ff0}
+.avatar{background:linear-gradient(140deg,#d8f9ed,#e7e8ff);color:#4771ba;border-radius:14px}
+.conversation-panel{background:#fff;min-height:0}.welcome-state h2{color:#1b2944;font-size:24px}.welcome-state p{color:#8795ab}
+.conversation-head{background:linear-gradient(100deg,#fff,#fbfcff);border-color:#edf1f7}.conversation-user b{font-size:14px;color:#1d2a45}
+.messages,.user-messages{background-color:#fbfcff;background-image:radial-gradient(#dce4f0 .75px,transparent .75px);background-size:19px 19px}
+.msg{max-width:75%}.bubble{border-radius:17px;padding:12px 15px;font-size:13px;box-shadow:0 5px 20px #2536570b}
+.msg.admin .bubble{background:linear-gradient(135deg,#e3fbf2,#eef0ff);border:1px solid #dcefe9}.msg.user .bubble{background:#fff;border:1px solid #e9eef6}
+.composer,.user-composer{background:#fff;border-top:1px solid #edf1f7;padding:15px 18px}
+.composer textarea,.user-composer textarea{background:#f7f9fc;border-color:#e7edf5;border-radius:15px}
+.attach{background:#eff3ff;color:#615be9}.send{background:linear-gradient(135deg,#1bc6a2,#6965ef);box-shadow:0 8px 18px #6664ed32}
+.groups-view{margin-top:0;padding:25px}.group-card{border:1px solid #e9edf7;box-shadow:0 12px 30px #273a5b0b;border-radius:20px;transition:.2s}.group-card:hover{transform:translateY(-3px);box-shadow:0 18px 36px #273a5b16}
+.user-page{background:radial-gradient(ellipse at 75% -5%,#e7e6ff 0,transparent 37%),radial-gradient(ellipse at 0 100%,#dff8ef 0,transparent 35%),#f4f6fb}
+.user-shell{max-width:1500px;grid-template-columns:92px minmax(0,1fr);padding:18px;gap:16px}
+.user-rail{border:1px solid #ffffff18;background:linear-gradient(160deg,#121c33,#202d4b);border-radius:23px;padding:16px 9px;box-shadow:0 20px 55px #17233d22}
+.user-main{border:1px solid #fff;border-radius:24px;box-shadow:0 22px 65px #24365a13}
+.user-topbar{height:94px;padding:0 28px;background:linear-gradient(100deg,#fff,#fbfcff)}
+.user-topbar h1{font-size:18px;color:#1b2944;letter-spacing:-.4px}.user-topbar p{font-size:11px}
+.user-status{background:#eaf9f3;border:1px solid #d9f3e8}
+.user-composer{padding:17px 22px}
+.group-bubble{border-radius:15px;transition:.18s}.group-bubble:hover{transform:translateY(-2px)}
+.admin-bubble{background:linear-gradient(140deg,#1ac6a2,#6865ed);border:0;color:#fff;box-shadow:0 8px 20px #5c67dc45;margin:4px 0 7px}
+.admin-bubble.active{outline:2px solid #78e6ce;outline-offset:3px}
+.new-chat-btn{background:#263750;border-color:#445575}
+.contact-list{max-height:34vh}
+.file-link{background:#f3f6ff;border:1px solid #e7ebfa;padding:10px 12px;border-radius:11px}
+.delete-user{border-radius:9px!important}
+@media(max-width:850px){.admin-shell{grid-template-columns:70px minmax(0,1fr);padding:10px}.admin-main{padding-left:12px}.workspace-grid{grid-template-columns:270px minmax(0,1fr)}}
+@media(max-width:620px){.admin-shell{padding:0}.admin-main{padding:0 9px 10px}.people-panel,.conversation-panel,.groups-view{border-radius:16px}.user-shell{padding:0;grid-template-columns:60px minmax(0,1fr);gap:0}.user-rail{border-radius:0}.user-main{border-radius:0}.user-topbar{padding:0 12px}}
