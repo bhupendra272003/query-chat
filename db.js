@@ -28,8 +28,26 @@ async function init() {
       created_at BIGINT NOT NULL,
       approved_at BIGINT,
       last_read_user_msg BIGINT NOT NULL DEFAULT 0,
-      last_read_admin_msg BIGINT NOT NULL DEFAULT 0
+      last_read_admin_msg BIGINT NOT NULL DEFAULT 0,
+      password_reset_required BOOLEAN NOT NULL DEFAULT FALSE
     );
+    ALTER TABLE users ADD COLUMN IF NOT EXISTS password_reset_required BOOLEAN NOT NULL DEFAULT FALSE;
+    CREATE TABLE IF NOT EXISTS chat_groups (
+      id BIGSERIAL PRIMARY KEY, name VARCHAR(80) NOT NULL, description VARCHAR(240) NOT NULL DEFAULT '',
+      created_at BIGINT NOT NULL
+    );
+    CREATE TABLE IF NOT EXISTS group_members (
+      group_id BIGINT NOT NULL REFERENCES chat_groups(id) ON DELETE CASCADE,
+      user_id BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+      joined_at BIGINT NOT NULL, PRIMARY KEY(group_id,user_id)
+    );
+    CREATE TABLE IF NOT EXISTS group_messages (
+      id BIGSERIAL PRIMARY KEY, group_id BIGINT NOT NULL REFERENCES chat_groups(id) ON DELETE CASCADE,
+      sender_user_id BIGINT REFERENCES users(id) ON DELETE SET NULL,
+      sender_role VARCHAR(5) NOT NULL CHECK(sender_role IN ('admin','user')),
+      body TEXT NOT NULL, created_at BIGINT NOT NULL
+    );
+    CREATE INDEX IF NOT EXISTS idx_group_messages ON group_messages(group_id,id);
     CREATE TABLE IF NOT EXISTS messages (
       id BIGSERIAL PRIMARY KEY,
       user_id BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
@@ -84,6 +102,17 @@ async function listUsers() {
     FROM users u ORDER BY CASE u.status WHEN 'pending' THEN 0 WHEN 'approved' THEN 1 ELSE 2 END, last_activity DESC`);
   return rows.map(r => ({...r, id:Number(r.id), unread:Number(r.unread)}));
 }
+async function setUserPassword(id,hash) { await pool.query('UPDATE users SET password_hash=$1,password_reset_required=TRUE WHERE id=$2',[hash,id]); }
+async function changeUserPassword(id,hash) { await pool.query('UPDATE users SET password_hash=$1,password_reset_required=FALSE WHERE id=$2',[hash,id]); }
+async function listGroups() { const {rows}=await pool.query(`SELECT g.id,g.name,g.description,g.created_at,COUNT(gm.user_id)::int AS member_count FROM chat_groups g LEFT JOIN group_members gm ON gm.group_id=g.id GROUP BY g.id ORDER BY g.created_at DESC`); return rows.map(x=>({...x,id:Number(x.id),member_count:Number(x.member_count)})); }
+async function createGroup(name,description,userIds) { const c=await pool.connect(); try { await c.query('BEGIN'); const r=await c.query('INSERT INTO chat_groups(name,description,created_at) VALUES($1,$2,$3) RETURNING id',[name,description,Date.now()]); for(const id of userIds) await c.query('INSERT INTO group_members(group_id,user_id,joined_at) VALUES($1,$2,$3) ON CONFLICT DO NOTHING',[r.rows[0].id,id,Date.now()]); await c.query('COMMIT'); return Number(r.rows[0].id); } catch(e){await c.query('ROLLBACK');throw e} finally{c.release()} }
+async function getUserGroups(userId) { const {rows}=await pool.query(`SELECT g.id,g.name,g.description,g.created_at FROM chat_groups g JOIN group_members gm ON gm.group_id=g.id WHERE gm.user_id=$1 ORDER BY g.created_at DESC`,[userId]); return rows.map(x=>({...x,id:Number(x.id)})); }
+async function getGroupMembers(groupId) { const {rows}=await pool.query(`SELECT u.id,u.name,u.email FROM users u JOIN group_members gm ON gm.user_id=u.id WHERE gm.group_id=$1 ORDER BY u.name`,[groupId]); return rows.map(x=>({...x,id:Number(x.id)})); }
+async function getGroupMessages(groupId) { const {rows}=await pool.query(`SELECT m.id,m.group_id,m.sender_role,m.sender_user_id,m.body,m.created_at,u.name AS sender_name FROM group_messages m LEFT JOIN users u ON u.id=m.sender_user_id WHERE m.group_id=$1 ORDER BY m.id`,[groupId]); return rows.map(x=>({...x,id:Number(x.id),group_id:Number(x.group_id)})); }
+async function addGroupMessage(groupId,userId,role,body) { const {rows}=await pool.query('INSERT INTO group_messages(group_id,sender_user_id,sender_role,body,created_at) VALUES($1,$2,$3,$4,$5) RETURNING id,group_id,sender_user_id,sender_role,body,created_at',[groupId,userId,role,body,Date.now()]); const x=rows[0]; return {...x,id:Number(x.id),group_id:Number(x.group_id),sender_user_id:x.sender_user_id?Number(x.sender_user_id):null}; }
+async function isGroupMember(groupId,userId) { const {rowCount}=await pool.query('SELECT 1 FROM group_members WHERE group_id=$1 AND user_id=$2',[groupId,userId]); return rowCount>0; }
+async function addGroupMembers(groupId,userIds) { for(const id of userIds) await pool.query('INSERT INTO group_members(group_id,user_id,joined_at) VALUES($1,$2,$3) ON CONFLICT DO NOTHING',[groupId,id,Date.now()]); }
+async function deleteGroup(groupId) { await pool.query('DELETE FROM chat_groups WHERE id=$1',[groupId]); }
 async function setStatus(id,status) {
   await pool.query('UPDATE users SET status=$1, approved_at=$2 WHERE id=$3', [status,status==='approved'?Date.now():null,id]);
 }
@@ -135,4 +164,4 @@ async function downloadFile(path) {
 async function removeFiles(paths) {
   if(paths.length) await supabase.storage.from(BUCKET).remove(paths);
 }
-module.exports={pool,init,getUserByEmail,getUserById,createUser,listUsers,setStatus,addMessage,getMessages,getFile,markAdminRead,markUserRead,uploadFile,downloadFile,removeFiles,close:()=>pool.end()};
+module.exports={pool,init,getUserByEmail,getUserById,createUser,listUsers,setStatus,setUserPassword,changeUserPassword,listGroups,createGroup,getUserGroups,getGroupMembers,getGroupMessages,addGroupMessage,isGroupMember,addGroupMembers,deleteGroup,addMessage,getMessages,getFile,markAdminRead,markUserRead,uploadFile,downloadFile,removeFiles,close:()=>pool.end()};
