@@ -1,3 +1,32 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#101827"><title>Query Chat · Your space</title><link rel="stylesheet" href="/style.css"></head><body class="user-page modern"><main class="user-shell"><aside class="user-rail"><div class="brand-logo">Q</div><div class="rail-caption">YOUR SPACE</div><button id="admin-chat" class="group-bubble admin-bubble active" title="Chat with Admin" aria-label="Chat with Admin">A</button><div class="rail-caption">MEMBERS</div><button id="new-chat" class="new-chat-btn" title="Start private chat">＋</button><div id="user-contacts" class="user-groups contact-list"><div class="rail-empty">Members</div></div><div class="rail-caption">GROUPS</div><div id="user-groups" class="user-groups"><div class="rail-empty">Groups will appear here</div></div><button id="logout" class="rail-logout" title="Sign out">↗</button></aside><section class="user-main"><header class="user-topbar"><div class="top-avatar">Q</div><div><span class="eyebrow">PRIVATE MESSAGING</span><h1 id="room-title">Your conversation</h1><p id="room-subtitle">A direct line to the admin team</p></div><div class="user-status"><i></i> Connected</div></header><section id="user-messages" class="user-messages"><div class="user-welcome"><div class="welcome-orb">✦</div><h2>Your messages, your space.</h2><p>Say hello to the admin team. Your conversation is private.</p></div></section><form id="user-composer" class="user-composer"><input id="user-files" type="file" multiple hidden accept=".pdf,.png,.jpg,.jpeg,.gif,.webp,.txt,.md,.rtf,.doc,.docx,.xls,.xlsx,.xlsm,.csv,.tsv,.zip,.7z,.py,.ipynb,.sql,.db,.sqlite,.json,.jsonl,.xml,.yaml,.yml,.toml,.log,.pbix,.pbit,.parquet,.feather,.orc,.dax,.m,.pq,.js,.ts,.html,.css,.java,.c,.cpp,.h,.hpp,.r,.sh,.bat"><button type="button" id="user-attach" class="attach" title="Attach files">＋</button><textarea id="user-message" rows="1" maxlength="5000" placeholder="Write something..." aria-label="Message"></textarea><button class="send" aria-label="Send">➤</button><div id="user-picked" class="picked"></div></form></section></main>
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#101827"><title>Query Chat · Your workspace</title><link rel="stylesheet" href="/style.css"></head>
+<body class="user-page modern">
+<main class="member-shell">
+ <aside class="member-sidebar">
+  <div class="member-brand"><div class="brand-logo">Q</div><div><b>Query Chat</b><small>YOUR WORKSPACE</small></div></div>
+  <div class="member-nav-label">MESSAGING</div>
+  <button class="member-nav active" id="show-inbox"><span>◉</span> All conversations</button>
+  <div class="member-nav-label">YOUR ACCOUNT</div>
+  <div class="member-profile"><div class="member-avatar">U</div><div><b id="member-name">Member</b><small>Online workspace</small></div><i></i></div>
+  <button id="logout" class="member-logout"><span>↗</span> Sign out</button>
+ </aside>
+ <aside class="member-list-panel">
+  <header class="member-list-head"><div><span class="eyebrow">YOUR MESSAGES</span><h2>Conversations</h2><p>Stay connected with your workspace</p></div><button id="new-chat" class="member-new" title="Find members">＋</button></header>
+  <div class="member-list-scroll">
+   <div class="member-list-label">PINNED</div>
+   <button id="admin-chat" class="member-conversation active"><span class="member-contact-avatar admin">A</span><span class="member-contact-copy"><b>Admin</b><small>Private conversation</small></span><i class="online-indicator"></i></button>
+   <div class="member-list-label member-label-row">MEMBERS <span>DIRECT MESSAGES</span></div>
+   <div id="user-contacts" class="member-contact-list"><div class="member-list-empty">No other members yet</div></div>
+   <div class="member-list-label member-label-row">GROUPS <span>YOUR SPACES</span></div>
+   <div id="user-groups" class="member-contact-list"><div class="member-list-empty">No groups yet</div></div>
+  </div>
+  <div class="member-list-footer">Your conversations are private and secure</div>
+ </aside>
+ <section class="member-chat-panel">
+  <header class="member-chat-head"><div class="member-chat-avatar" id="room-avatar">A</div><div class="member-chat-title"><span class="eyebrow">PRIVATE MESSAGING</span><h1 id="room-title">Your conversation</h1><p id="room-subtitle">A direct line to the admin team</p></div><div class="member-connected"><i></i> Connected</div></header>
+  <section id="user-messages" class="user-messages"><div class="user-welcome"><div class="welcome-orb">✦</div><h2>Your messages, your space.</h2><p>Say hello to the admin team. Your conversation is private.</p></div></section>
+  <form id="user-composer" class="user-composer"><input id="user-files" type="file" multiple hidden accept=".pdf,.png,.jpg,.jpeg,.gif,.webp,.txt,.md,.rtf,.doc,.docx,.xls,.xlsx,.xlsm,.csv,.tsv,.zip,.7z,.py,.ipynb,.sql,.db,.sqlite,.json,.jsonl,.xml,.yaml,.yml,.toml,.log,.pbix,.pbit,.parquet,.feather,.orc,.dax,.m,.pq,.js,.ts,.html,.css,.java,.c,.cpp,.h,.hpp,.r,.sh,.bat"><button type="button" id="user-attach" class="attach" title="Attach files">＋</button><textarea id="user-message" rows="1" maxlength="5000" placeholder="Write a message..." aria-label="Message"></textarea><button class="send" aria-label="Send">➤</button><div id="user-picked" class="picked"></div></form>
+ </section>
+</main>
 <div id="password-wall" class="modal-backdrop" hidden><form id="password-form" class="modal-card"><span class="eyebrow">SECURITY CHECK</span><h2>Set your new password</h2><p>Your administrator issued a temporary password. Create a new password to continue.</p><label>New password<div class="password-wrap"><input id="new-password" type="password" minlength="8" maxlength="100" required placeholder="At least 8 characters"><button type="button" class="password-toggle" data-password-toggle="new-password">Show</button></div></label><label>Confirm password<input id="confirm-password" type="password" minlength="8" maxlength="100" required placeholder="Repeat new password"></label><div id="password-error" class="form-error" hidden></div><button class="gradient-btn full-btn">Update password</button></form></div>
 <script src="/socket.io/socket.io.js"></script><script src="/chat.js"></script></body></html>
