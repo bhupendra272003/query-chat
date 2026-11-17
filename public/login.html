@@ -1,1 +1,38 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Log in · Query Chat</title><link rel="stylesheet" href="/style.css"></head><body class="auth-page"><main class="auth-card"><a class="back" href="/">← Query Chat</a><h1>Welcome back</h1><p class="muted">Log in to continue your conversation.</p><form id="login-form"><label>Email or admin username<input name="email" required autocomplete="username" placeholder="Email / admin username"></label><label>Password<div class="password-wrap"><input id="login-password" name="password" type="password" required autocomplete="current-password" placeholder="Your password"><button class="password-toggle" type="button" data-password-toggle="login-password" aria-label="Show password" aria-pressed="false">Show</button></div></label><div id="error" class="alert" hidden></div><button class="btn primary full">Log in</button></form><p class="tiny">Don't have an account? <a href="/register">Create one</a></p></main><script src="/auth.js"></script></body></html>
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#11121b"><title>Log in · Query Chat</title><link rel="stylesheet" href="/style.css">
+</head>
+<body class="auth-page auth-studio">
+<div class="auth-glow auth-glow-one"></div><div class="auth-glow auth-glow-two"></div>
+<main class="auth-layout">
+ <section class="auth-showcase">
+  <a class="auth-brand" href="/"><span class="auth-brand-mark">Q</span><span><b>Query Chat</b><small>PRIVATE WORKSPACE</small></span></a>
+  <div class="auth-showcase-copy"><span class="auth-kicker"><i></i> YOUR SPACE. YOUR PEOPLE.</span><h1>Conversations that<br><em>move work forward.</em></h1><p>A calm, private space for your team to connect, exchange ideas and share the files that matter.</p></div>
+  <div class="auth-preview">
+   <div class="preview-top"><span class="preview-avatar">Q</span><div><b>Workspace chat</b><small><i></i> Secure connection</small></div><span class="preview-dots">•••</span></div>
+   <div class="preview-message received">Welcome back! Ready to pick up where you left off?</div>
+   <div class="preview-message sent">Absolutely. Let's get things moving. ✨</div>
+   <div class="preview-file"><span>▤</span><div><b>project-analysis.pbix</b><small>Shared with your workspace</small></div><span>↓</span></div>
+  </div>
+  <div class="auth-footnote">PRIVATE BY DESIGN <span>•</span> BUILT FOR FOCUS</div>
+ </section>
+ <section class="auth-form-side">
+  <div class="auth-card auth-card-studio">
+   <div class="auth-mobile-brand"><span class="auth-brand-mark">Q</span><b>Query Chat</b></div>
+   <span class="auth-kicker">WELCOME BACK</span><h2>Sign in to your<br>workspace<span class="auth-period">.</span></h2>
+   <p class="muted">Your conversations are right where you left them.</p>
+   <form id="login-form">
+    <label>Email or admin username<input name="email" required autocomplete="username" placeholder="you@example.com"></label>
+    <label>Password<div class="password-wrap"><input id="login-password" name="password" type="password" required autocomplete="current-password" placeholder="Enter your password"><button class="password-toggle" type="button" data-password-toggle="login-password" aria-label="Show password" aria-pressed="false">Show</button></div></label>
+    <div id="error" class="alert" hidden></div>
+    <button class="btn primary full auth-submit">Continue to workspace <span>→</span></button>
+   </form>
+   <p class="tiny">New to Query Chat? <a href="/register">Create an account</a></p>
+   <div class="auth-secure"><span>◇</span> Your workspace is private and secure</div>
+  </div>
+ </section>
+</main>
+<script src="/auth.js"></script>
+</body></html>
