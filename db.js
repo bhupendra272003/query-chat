@@ -72,14 +72,13 @@ async function init() {
   `);
   const { data, error } = await supabase.storage.getBucket(BUCKET);
   if (error && (error.statusCode === '404' || error.status === 404)) {
-    const made = await supabase.storage.createBucket(BUCKET, {
-      public: false,
-      fileSizeLimit: '10MB',
-      allowedMimeTypes: ['application/pdf','image/png','image/jpeg','image/gif','image/webp','text/plain','application/msword','application/vnd.openxmlformats-officedocument.wordprocessingml.document','application/vnd.ms-excel','application/vnd.openxmlformats-officedocument.spreadsheetml.sheet','text/csv','application/zip','application/x-zip-compressed']
-    });
+    const made = await supabase.storage.createBucket(BUCKET, { public: false, fileSizeLimit: '50MB', allowedMimeTypes: null });
     if (made.error && !String(made.error.message).toLowerCase().includes('already exists')) throw made.error;
   } else if (error) {
     throw error;
+  } else {
+    const updated = await supabase.storage.updateBucket(BUCKET, { public: false, fileSizeLimit: '50MB', allowedMimeTypes: null });
+    if (updated.error) throw updated.error;
   }
 }
 
