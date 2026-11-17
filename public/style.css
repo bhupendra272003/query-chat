@@ -353,3 +353,98 @@ body.modern{font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",s
  .outline-btn{font-size:8px;padding:6px}.messages{padding:8px}.bubble{font-size:10px;padding:8px}
  .composer{padding:8px;gap:5px}.composer textarea{font-size:10px;min-height:36px}
 }
+
+/* USER WORKSPACE — full navigation rail + responsive phone layout */
+.member-shell{width:100%;max-width:none;min-height:100dvh;grid-template-columns:220px minmax(285px,340px) minmax(0,1fr) 255px;gap:15px;padding:18px;overflow:hidden}
+.member-sidebar{width:100%;min-width:0;align-items:stretch;justify-content:flex-start;padding:23px 15px;border:1px solid #303543;border-radius:21px;background:linear-gradient(180deg,#1d202a,#171a22);box-shadow:0 18px 55px #0004}
+.member-brand{display:flex;align-items:center;justify-content:flex-start;gap:12px;padding:0 6px 34px}
+.member-brand>div:nth-child(2){display:block}
+.member-brand b{display:block;color:#f4f5fb;font-size:15px}
+.member-brand small{display:block;color:#8991a5;font-size:8px;letter-spacing:2px;margin-top:4px}
+.member-brand .brand-logo{width:44px;height:44px;flex:0 0 44px;border-radius:15px}
+.member-nav-label{display:block;color:#737d93;font-size:9px;font-weight:850;letter-spacing:2px;padding:12px 9px 9px}
+.member-nav{width:100%;height:47px;display:flex;align-items:center;justify-content:flex-start;gap:13px;padding:0 13px;margin:4px 0;border-radius:13px;font-size:12px;font-weight:700;color:#b9bfd0}
+.member-nav span{width:22px;flex:0 0 22px;text-align:center;font-size:17px}
+.member-nav.active{background:linear-gradient(100deg,#7657f644,#3d345c55);box-shadow:inset 3px 0 #9b83ff;color:#fff}
+.member-profile{width:100%;margin-top:auto;padding:12px 10px;display:flex;justify-content:flex-start;align-items:center;gap:10px;border-radius:14px;background:#252a35;border:1px solid #343b49}
+.member-profile>div:nth-child(2){display:block;min-width:0}
+.member-profile b{display:block;color:#f1f2f8;font-size:11px}
+.member-profile small{display:block;color:#9299aa;font-size:9px;margin-top:3px}
+.member-profile i{display:block;margin-left:auto}
+.member-logout{display:flex;width:100%;height:42px;align-items:center;gap:12px;padding:0 12px;margin-top:10px;border-radius:12px;color:#aeb5c6;font-size:11px}
+.member-list-panel,.member-chat-panel,.member-profile-panel{min-width:0;width:auto;border-radius:20px;border:1px solid #303541;box-shadow:0 18px 55px #0003}
+.member-list-head{padding:20px 16px 16px}
+.member-list-head h2{font-size:18px;letter-spacing:-.5px}
+.member-list-head p{font-size:11px}
+.member-list-scroll{padding:10px 10px}
+.member-list-label{font-size:9px;letter-spacing:1.8px}
+.member-conversation{padding:11px 10px;gap:10px;border-radius:13px}
+.member-contact-avatar{width:42px;height:42px;flex:0 0 42px}
+.member-contact-copy b{font-size:12px}.member-contact-copy small{font-size:10px}
+.member-chat-head{height:82px;flex:0 0 82px;padding:0 22px;gap:13px}
+.member-chat-avatar{width:48px;height:48px;flex:0 0 48px}
+.member-chat-title h1{font-size:16px}.member-chat-title p{font-size:11px}
+.member-chat-panel .user-messages{padding:22px}
+.member-chat-panel .bubble{font-size:13px;padding:12px 15px}
+.member-chat-panel .user-composer{padding:14px;gap:10px}
+.member-chat-panel .user-composer textarea{font-size:13px;min-height:45px;padding:12px}
+.member-chat-panel .attach,.member-chat-panel .send{width:44px;height:44px;flex:0 0 44px}
+.member-profile-panel{padding:22px 18px}
+@media(max-width:1150px){
+ .member-shell{grid-template-columns:190px minmax(230px,30%) minmax(0,1fr);padding:12px;gap:10px}
+ .member-profile-panel{display:none}
+}
+@media(max-width:760px){
+ .member-shell{grid-template-columns:54px minmax(112px,31vw) minmax(0,1fr);gap:6px;padding:6px;min-height:100dvh;height:100dvh}
+ .member-sidebar{padding:10px 4px;align-items:center;border-radius:15px}
+ .member-brand{justify-content:center;padding:0 0 18px}
+ .member-brand>div:nth-child(2),.member-nav-label{display:none}
+ .member-brand .brand-logo{width:36px;height:36px;flex-basis:36px}
+ .member-nav{width:40px;height:42px;padding:0;justify-content:center;gap:0;font-size:0}
+ .member-nav span{font-size:18px}
+ .member-profile{width:40px;padding:4px;justify-content:center}
+ .member-profile>div:nth-child(2),.member-profile i{display:none}
+ .member-profile .member-avatar{width:31px;height:31px}
+ .member-logout{width:40px;padding:0;justify-content:center;font-size:0}
+ .member-logout span{font-size:17px}
+ .member-list-panel{border-radius:15px}
+ .member-list-head{padding:11px 7px;gap:4px}
+ .member-list-head h2{font-size:12px}.member-list-head p,.member-list-footer{display:none}
+ .member-list-head .eyebrow{font-size:6px;letter-spacing:1px}
+ .member-new{width:29px;height:29px;flex:0 0 29px;font-size:17px}
+ .member-list-scroll{padding:6px 4px}
+ .member-list-label{font-size:6px;letter-spacing:1px;padding:8px 3px}
+ .member-label-row{display:flex;flex-wrap:wrap;gap:3px}
+ .member-label-row span{font-size:5px}
+ .member-conversation{padding:7px 4px;gap:5px;margin-bottom:4px}
+ .member-contact-avatar{width:28px;height:28px;flex:0 0 28px;font-size:11px}
+ .member-contact-copy{min-width:0}
+ .member-contact-copy b{font-size:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+ .member-contact-copy small{font-size:7px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+ .member-chat-panel{border-radius:15px;min-width:0}
+ .member-chat-head{height:62px;flex:0 0 62px;padding:0 8px;gap:7px}
+ .member-chat-avatar{width:34px;height:34px;flex:0 0 34px;border-radius:11px}
+ .member-chat-title{min-width:0}
+ .member-chat-title .eyebrow{font-size:6px;letter-spacing:1px}
+ .member-chat-title h1{font-size:11px}
+ .member-chat-title p{font-size:8px}
+ .member-connected{display:none}
+ .member-chat-panel .user-messages{padding:9px;min-width:0}
+ .member-chat-panel .msg{max-width:94%}
+ .member-chat-panel .bubble{font-size:10px;padding:8px 10px}
+ .member-chat-panel .user-composer{padding:7px 5px;gap:4px}
+ .member-chat-panel .user-composer textarea{font-size:10px;min-width:0;min-height:36px;padding:9px}
+ .member-chat-panel .attach,.member-chat-panel .send{width:31px;height:31px;flex:0 0 31px;border-radius:10px}
+}
+@media(max-width:390px){
+ .member-shell{grid-template-columns:43px minmax(100px,30vw) minmax(0,1fr);gap:4px;padding:4px}
+ .member-sidebar{padding:8px 2px}
+ .member-nav,.member-profile,.member-logout{width:35px}
+ .member-brand .brand-logo{width:32px;height:32px;flex-basis:32px}
+ .member-list-head{padding:8px 4px}
+ .member-contact-avatar{width:24px;height:24px;flex-basis:24px}
+ .member-chat-head{padding:0 5px;gap:5px}
+ .member-chat-title h1{font-size:10px}
+ .member-chat-panel .user-composer{gap:3px;padding:5px 3px}
+ .member-chat-panel .attach,.member-chat-panel .send{width:27px;height:27px;flex-basis:27px}
+}
