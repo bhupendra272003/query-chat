@@ -1,11 +1,15 @@
 # Query Chat
 
-A private, WhatsApp/Instagram-DM-style chat website with admin-approved accounts, real-time one-to-one messaging, and file attachments.
+A private, WhatsApp/Instagram-DM-style chat website with admin-approved accounts, real-time one-to-one and group messaging, admin-managed accounts, and file attachments.
 
 ## Features
 - One administrator login configured through environment variables
 - User registration with pending / approved / rejected states
 - Private conversation between each approved user and the administrator
+- Admin can set a temporary password for any approved member; the member must change it at next login
+- Admin-created groups with approved-member selection and group messaging
+- Group spaces appear only for members invited by the administrator
+- Modern responsive admin and user workspaces
 - Real-time message updates using Socket.IO
 - File attachments in both directions (up to 10 MB per file by default)
 - Private Supabase Storage bucket; files are downloaded only through authenticated routes
@@ -29,7 +33,7 @@ A private, WhatsApp/Instagram-DM-style chat website with admin-approved accounts
 
 ## Local development
 
-1. Install Node.js 20 or newer.
+1. Install Node.js 22 or newer.
 2. Copy `.env.example` to `.env` and fill in the required values.
 3. Run `npm install`, then `npm start`.
 4. Open `http://localhost:3000`.
