@@ -29,3 +29,5 @@ body.modern{font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",s
 [hidden]{display:none!important}
 
 .new-chat-btn{width:43px;height:43px;border:1px solid #3a4b63;border-radius:15px;background:linear-gradient(135deg,#13b395,#7169eb);color:white;font-size:25px;line-height:1;cursor:pointer;margin:2px 0 10px;box-shadow:0 8px 20px #15a98c30}.contact-list{padding-bottom:12px;border-bottom:1px solid #2c3b53;margin-bottom:10px;max-height:38vh}.contact-bubble{background:#263750;border-color:#3b4a62}.contact-bubble.active{outline:2px solid #6de0c3;outline-offset:2px}.user-rail .rail-caption{font-size:7px}
+
+.delete-user{flex:0 0 27px;width:27px;height:27px;margin-left:5px;background:#542c3a!important;color:#ff9aa9!important;border:1px solid #8a4657!important;font-size:18px;opacity:.9}.delete-user:hover{background:#8b3048!important;color:#fff!important}.person-row{gap:9px}.person-info{min-width:0;flex:1}
