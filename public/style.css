@@ -119,3 +119,67 @@ body.modern{font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",s
 .member-chat-panel .user-composer{padding:15px 18px;border-top:1px solid #edf1f7}
 @media(max-width:900px){.member-shell{grid-template-columns:68px 220px minmax(0,1fr);padding:10px;gap:9px}.member-sidebar{padding:16px 8px;align-items:center}.member-brand{padding:0 0 22px}.member-brand>div:nth-child(2),.member-nav-label,.member-nav:not(.active),.member-nav{font-size:0}.member-nav{width:43px;height:43px;justify-content:center;padding:0}.member-nav span{font-size:18px}.member-profile{width:100%;justify-content:center;padding:8px 4px}.member-profile>div:nth-child(2),.member-profile i,.member-logout{display:none}.member-list-head{padding:16px 12px}.member-chat-head{padding:0 14px}}
 @media(max-width:620px){.member-shell{padding:0;gap:0;grid-template-columns:55px 150px minmax(0,1fr)}.member-sidebar{border-radius:0;padding:12px 5px}.member-brand .brand-logo{width:38px;height:38px}.member-list-panel{border-radius:0}.member-list-head{padding:12px 8px}.member-list-head h2{font-size:14px}.member-list-head p{display:none}.member-new{width:31px;height:31px;flex-basis:31px;font-size:19px}.member-list-scroll{padding:7px 5px}.member-conversation{gap:6px;padding:8px 5px}.member-contact-avatar{width:30px;height:30px;flex-basis:30px;border-radius:10px}.member-contact-copy b{font-size:9px}.member-contact-copy small{font-size:8px}.member-list-label{font-size:7px;padding:8px 5px}.member-label-row span{display:none}.member-list-footer{font-size:7px;padding:8px 5px}.member-chat-panel{border-radius:0}.member-chat-head{height:70px;flex-basis:70px;padding:0 8px;gap:7px}.member-chat-avatar{width:33px;height:33px;flex-basis:33px;border-radius:11px}.member-chat-title h1{font-size:11px}.member-chat-title p{font-size:8px}.member-chat-title .eyebrow{font-size:6px}.member-connected{font-size:0;padding:7px}.member-connected i{margin:0}.member-chat-panel .user-messages{padding:10px 7px}.member-chat-panel .msg{max-width:94%}.member-chat-panel .bubble{font-size:11px;padding:9px 10px}.member-chat-panel .user-composer{padding:9px 6px;gap:5px}.member-chat-panel .attach,.member-chat-panel .send{width:32px;height:32px;border-radius:11px}.member-chat-panel .user-composer textarea{min-height:38px;padding:9px;font-size:10px}.member-chat-panel .picked{left:45px;bottom:55px}}
+
+/* Reference-inspired dark messenger studio */
+:root{--studio-bg:#111318;--studio-panel:#1a1d24;--studio-panel2:#20232b;--studio-line:#2b303b;--studio-text:#eef0f8;--studio-muted:#9298a8;--studio-purple:#7657f6}
+.admin-page,.user-page{background:radial-gradient(ellipse at 52% 0,#34215c 0,transparent 42%),#111318;color:var(--studio-text)}
+.admin-shell{grid-template-columns:70px minmax(0,1fr);gap:12px;padding:14px;max-width:1800px}
+.admin-sidebar{background:#191c23;border:1px solid #2a2e38;border-radius:19px;padding:17px 9px;align-items:center}
+.brand-row{padding:0 0 26px;justify-content:center}.brand-row>div:nth-child(2),.side-label{display:none}
+.brand-logo,.profile-avatar{background:linear-gradient(145deg,#18c5ae,#7758f7)}
+.nav-item{font-size:0!important;width:45px;height:45px;justify-content:center;padding:0;margin:6px 0;position:relative}
+.nav-item span{font-size:19px}.nav-count{position:absolute;right:-3px;top:-4px;font-size:8px;padding:2px 5px}
+.sidebar-profile{margin-top:auto;width:48px;padding:7px;justify-content:center}.sidebar-profile>div:nth-child(2),.sidebar-profile .online-dot{display:none}
+.admin-main{padding:0;display:flex;flex-direction:column;min-height:0}.topbar{height:65px;flex:0 0 65px;padding:0 8px}.topbar h1{font-size:21px;color:#f1f1f7}.topbar .eyebrow{color:#858b9b}
+.workspace-grid{flex:1;min-height:0;grid-template-columns:280px minmax(300px,1fr) 245px;gap:10px}
+.people-panel,.conversation-panel,.groups-view,.admin-profile-panel{background:#1a1d24;border:1px solid #2b303a;border-radius:16px;box-shadow:0 18px 55px #0003;color:#eceef6}
+.people-panel{padding:14px}.panel-heading h2,.conversation-user b{color:#f1f2f8}.panel-heading p,.conversation-user small{color:#969cad}
+.filter-pills{background:#242832;border-radius:10px}.filter{color:#a2a8b7}.filter.active{background:#7657f6;color:white;box-shadow:none}
+.people-list{overflow:auto}.person-row{color:#eef0f8;border-radius:11px}.person-row:hover,.person-row.selected{background:#292d38;box-shadow:inset 2px 0 #8667ff}.person-info small{color:#9299aa}
+.avatar{background:linear-gradient(145deg,#313949,#5746a1);color:#fff}
+.conversation-panel{background:#171a20;min-height:0}.welcome-state h2{color:#f0f1f7}.welcome-state p{color:#969cad}
+.conversation-head{background:#1c1f27;border-color:#2c303b}.messages{background-color:#171a20;background-image:radial-gradient(#343743 .7px,transparent .7px);background-size:20px 20px}
+.msg.admin .bubble{background:linear-gradient(120deg,#6045d6,#805cf7);color:#fff;border:0}.msg.user .bubble{background:#252932;color:#f0f1f7;border:1px solid #343945}
+.stamp{color:#aeb2c0}.composer{background:#1c1f27;border-color:#2d323d}.composer textarea{background:#252932;color:#fff;border-color:#343a47}
+.attach{background:#292d3a;color:#a994ff}.send{background:linear-gradient(135deg,#18bda8,#7958f6)}
+.admin-profile-panel{display:flex;flex-direction:column;padding:17px 15px;min-width:0}
+.profile-panel-top{display:flex;justify-content:space-between;color:#f3f3f8;font-size:13px}
+.profile-panel-avatar,.member-profile-large{width:82px;height:82px;border-radius:50%;display:grid;place-items:center;margin:25px auto 12px;background:linear-gradient(145deg,#1ac5ae,#7958f6);font-size:29px;font-weight:900;color:#fff;box-shadow:0 10px 35px #7657f655}
+.admin-profile-panel>h3,.member-profile-hero h3{text-align:center;font-size:15px;margin:0;color:#f4f4f8}.admin-profile-panel>p,.member-profile-hero p{text-align:center;color:#9298a8;font-size:10px;margin:6px 0 12px}
+.profile-panel-status{margin:0 auto;background:#17352f;color:#6de0bd;border-radius:20px;padding:7px 12px;font-size:9px;width:max-content}.profile-panel-status i{display:inline-block;width:6px;height:6px;background:#35d7a5;border-radius:50%;margin-right:6px}
+.profile-panel-divider{height:1px;background:#30343e;margin:20px 0}
+.profile-panel-heading{font-size:8px;letter-spacing:1.7px;color:#8e95a7;margin-bottom:10px;font-weight:850}
+.profile-stat{display:flex;justify-content:space-between;padding:8px 0;color:#aeb3c0;font-size:10px}.profile-stat b{color:#f1f2f7}
+.profile-file-card{display:flex;align-items:center;gap:10px;padding:11px 9px;margin:7px 0;border-radius:10px;background:#242831;border:1px solid #2e333e}
+.profile-file-card>span{width:32px;height:32px;display:grid;place-items:center;border-radius:9px;background:#303544;color:#a992ff;font-size:17px}
+.profile-file-card b,.profile-file-card small{display:block}.profile-file-card b{font-size:10px;color:#eceef6}.profile-file-card small{font-size:8px;color:#8f96a8;margin-top:4px}
+.profile-panel-note{font-size:9px;line-height:1.7;color:#858c9d;margin-top:auto;padding-top:18px}
+.member-shell{grid-template-columns:210px 265px minmax(300px,1fr) 245px;gap:10px;padding:14px;max-width:1800px}
+.member-sidebar,.member-list-panel,.member-chat-panel,.member-profile-panel{background:#1a1d24;border:1px solid #2b303a;border-radius:16px;box-shadow:0 18px 55px #0003;color:#eef0f8}
+.member-sidebar{padding:20px 14px;background:#191c23}
+.member-brand b{color:#f4f4f8}.member-brand small,.member-nav-label{color:#858da0}
+.member-nav{color:#b2b7c5}.member-nav.active,.member-nav:hover{background:linear-gradient(100deg,#684bdc55,#7958f644);box-shadow:inset 3px 0 #9b7cff;color:#fff}
+.member-profile{background:#242831;border-color:#343945}.member-profile b{color:#f4f4f8}.member-profile small{color:#9299aa}
+.member-logout{background:#252a34;color:#bfc4d1}
+.member-list-panel{background:#1a1d24}.member-list-head{border-color:#30343e}.member-list-head h2{color:#f3f4f8}.member-list-head p{color:#9299aa}
+.member-list-label{color:#858da0}.member-label-row span{color:#71798c}
+.member-conversation{color:#eef0f8}.member-conversation:hover,.member-conversation.active{background:#292d38;box-shadow:inset 2px 0 #8c6bff}
+.member-contact-copy b{color:#f0f1f7}.member-contact-copy small,.member-list-empty,.member-list-footer{color:#8d94a6}
+.member-contact-avatar{background:linear-gradient(145deg,#34394a,#6048a8);color:#fff}.member-contact-avatar.admin{background:linear-gradient(145deg,#19bda8,#7858f7)}
+.member-list-footer{border-color:#30343e}
+.member-chat-panel{background:#171a20}.member-chat-head{background:#1c1f27;border-color:#30343e}.member-chat-title h1{color:#f3f4f8}.member-chat-title p{color:#969cad}.member-chat-title .eyebrow{color:#8b91a3}
+.member-connected{background:#17352f;color:#6de0bd;border-color:#285747}
+.member-chat-panel .user-messages{background-color:#171a20;background-image:radial-gradient(#343743 .7px,transparent .7px);color:#f0f1f7}
+.member-chat-panel .msg.admin .bubble{background:linear-gradient(120deg,#6045d6,#805cf7);color:#fff;border:0}
+.member-chat-panel .msg.user .bubble{background:#252932;color:#f0f1f7;border:1px solid #343945}
+.member-chat-panel .user-composer{background:#1c1f27;border-color:#30343e}.member-chat-panel .user-composer textarea{background:#252932;color:#fff;border-color:#343a47}
+.member-profile-panel{display:flex;flex-direction:column;padding:17px 14px;min-width:0}
+.member-profile-hero{text-align:center}.member-profile-large{margin:25px auto 12px}
+.member-profile-hero h3{color:#f4f4f8}.member-profile-hero p{color:#9298a8}
+.member-profile-panel .profile-panel-divider{background:#30343e}
+.member-profile-panel .profile-panel-heading{color:#8e95a7}
+.member-profile-panel .profile-file-card{background:#242831;border-color:#303641}
+.member-profile-panel .profile-file-card b{color:#eceef6}.member-profile-panel .profile-file-card small{color:#8f96a8}
+.member-profile-panel .profile-panel-note{color:#858c9d}
+@media(max-width:1050px){.admin-profile-panel,.member-profile-panel{display:none}.workspace-grid{grid-template-columns:240px minmax(300px,1fr)}.member-shell{grid-template-columns:65px 220px minmax(300px,1fr)}}
+@media(max-width:680px){.admin-shell{padding:6px;grid-template-columns:48px minmax(0,1fr);gap:6px}.admin-sidebar{padding:10px 3px}.brand-logo{width:35px;height:35px}.nav-item{width:37px;height:37px}.admin-main .topbar{height:52px;flex-basis:52px}.workspace-grid{grid-template-columns:118px minmax(260px,1fr);gap:6px}.people-panel{padding:7px}.panel-heading h2{font-size:11px}.panel-heading p{display:none}.filter-pills{flex-direction:column}.filter{font-size:9px;padding:6px}.person-row{padding:7px;gap:5px}.person-info b{font-size:9px}.person-info small{font-size:8px}.delete-user{display:none}.conversation-head{padding:0 8px}.conversation-user b{font-size:10px}.conversation-user small{font-size:8px}.outline-btn{font-size:8px;padding:6px}.messages{padding:8px}.msg{max-width:94%}.bubble{font-size:10px;padding:8px}.composer{padding:8px;gap:5px}.composer textarea{font-size:10px;min-height:36px}.member-shell{padding:6px;gap:6px;grid-template-columns:45px 125px minmax(240px,1fr)}.member-sidebar{padding:9px 3px}.member-brand{padding:0 0 16px}.member-brand .brand-logo{width:34px;height:34px}.member-nav{width:35px;height:35px;padding:0;justify-content:center;font-size:0}.member-nav span{font-size:15px}.member-profile{padding:5px;justify-content:center}.member-profile>div:nth-child(2),.member-profile i,.member-logout{display:none}.member-list-head{padding:10px 6px}.member-list-head h2{font-size:11px}.member-list-head p,.member-list-footer{display:none}.member-new{width:27px;height:27px;flex-basis:27px;font-size:17px}.member-list-scroll{padding:5px 3px}.member-conversation{padding:7px 4px;gap:5px}.member-contact-avatar{width:27px;height:27px;flex-basis:27px}.member-contact-copy b{font-size:8px}.member-contact-copy small{font-size:7px}.member-list-label{font-size:6px;padding:7px 4px}.member-chat-head{height:58px;flex-basis:58px;padding:0 6px;gap:5px}.member-chat-avatar{width:29px;height:29px;flex-basis:29px}.member-chat-title h1{font-size:10px}.member-chat-title p{font-size:7px}.member-connected{display:none}.member-chat-panel .user-messages{padding:7px}.member-chat-panel .user-composer{padding:7px 5px;gap:4px}.member-chat-panel .user-composer textarea{font-size:9px;min-height:34px}.member-chat-panel .attach,.member-chat-panel .send{width:29px;height:29px}}
