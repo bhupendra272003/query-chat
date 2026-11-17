@@ -582,3 +582,12 @@ body.modern{font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",s
 .workspace-search:focus{border-color:#7866ee;box-shadow:0 0 0 3px #7866ee22}
 [hidden]{display:none!important}
 @media(max-width:680px){.workspace-search{height:39px;margin:10px 0;font-size:12px}}
+
+@media(max-width:680px){
+ .admin-sidebar .nav-item:not(.active){display:flex}
+ .admin-sidebar .nav-item{width:39px;height:40px;min-width:39px;padding:0;justify-content:center;gap:0;font-size:0!important}
+ .admin-sidebar .nav-item span{font-size:17px}
+ .admin-sidebar .nav-count{position:absolute;top:0;right:0;margin:0;font-size:7px;padding:2px 4px}
+ .admin-sidebar .brand-row .brand-logo{width:36px;height:36px;flex-basis:36px}
+ .admin-sidebar .sidebar-profile{width:39px}
+}
