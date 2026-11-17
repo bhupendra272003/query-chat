@@ -285,3 +285,71 @@ body.modern{font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",s
  .member-shell{grid-template-columns:46px minmax(120px,34vw) minmax(0,1fr);padding:5px;gap:5px}
  .member-chat-head{padding:0 9px}
 }
+
+/* ADMIN STUDIO — restore the full Q / workspace navigation rail */
+.admin-shell{width:100%;max-width:none;min-height:100dvh;grid-template-columns:224px minmax(0,1fr);gap:18px;padding:20px}
+.admin-sidebar{width:100%;min-width:0;align-items:stretch;justify-content:flex-start;padding:24px 16px;border-radius:22px;background:linear-gradient(180deg,#1d202a 0%,#171a22 100%);border:1px solid #303543;box-shadow:0 22px 65px #0004}
+.brand-row{display:flex;justify-content:flex-start;align-items:center;gap:12px;padding:0 7px 34px}
+.brand-row>div:nth-child(2){display:block}
+.brand-row b{display:block;color:#f5f5fb;font-size:15px;letter-spacing:-.3px}
+.brand-row small{display:block;color:#8991a5;font-size:8px;letter-spacing:2px;margin-top:4px}
+.brand-logo{width:44px;height:44px;flex:0 0 44px;border-radius:15px;box-shadow:0 9px 25px #7359ed44}
+.side-label{display:block;color:#737d93;font-size:9px;font-weight:850;letter-spacing:2px;padding:12px 9px 9px}
+.nav-item{width:100%;height:48px;justify-content:flex-start;gap:13px;padding:0 13px;margin:4px 0;border-radius:13px;font-size:12px!important;font-weight:700;color:#b9bfd0;position:relative}
+.nav-item span{width:22px;flex:0 0 22px;text-align:center;font-size:17px}
+.nav-item.active{background:linear-gradient(100deg,#7657f644,#3d345c55);box-shadow:inset 3px 0 #9b83ff;color:#fff}
+.nav-count{margin-left:auto;position:static;font-size:9px;padding:3px 7px;border-radius:20px}
+.sidebar-profile{width:100%;margin-top:auto;padding:12px 10px;display:flex;justify-content:flex-start;align-items:center;gap:10px;border-radius:14px;background:#252a35;border:1px solid #343b49}
+.sidebar-profile>div:nth-child(2){display:block;min-width:0}
+.sidebar-profile b{display:block;color:#f1f2f8;font-size:11px}
+.sidebar-profile small{display:block;color:#9299aa;font-size:9px;margin-top:3px}
+.sidebar-profile .profile-avatar{width:36px;height:36px;flex:0 0 36px;border-radius:12px}
+.sidebar-profile .online-dot{display:block;margin-left:auto}
+.admin-main{min-width:0;gap:14px}
+.admin-main .topbar{height:76px;flex-basis:76px;padding:0 10px}
+.admin-main .topbar h1{font-size:26px;letter-spacing:-.8px}
+.workspace-grid{width:100%;grid-template-columns:minmax(300px,350px) minmax(0,1fr) minmax(245px,285px);gap:16px}
+.people-panel,.conversation-panel,.admin-profile-panel{border-radius:20px;border:1px solid #303541;box-shadow:0 18px 55px #0003}
+.people-panel{padding:20px}
+.panel-heading h2{font-size:17px;letter-spacing:-.3px}
+.panel-heading p{font-size:11px}
+.filter-pills{padding:5px;gap:5px}
+.filter{padding:10px 8px;font-size:10px;border-radius:10px}
+.people-list{padding-top:13px}
+.person-row{padding:12px;border-radius:14px;margin-bottom:8px;gap:10px}
+.person-row.selected{box-shadow:inset 3px 0 #9478ff,0 8px 22px #0002}
+.person-info b{font-size:12px}.person-info small{font-size:10px}
+.conversation-head{height:82px;min-height:82px;padding:0 24px}
+.conversation-user b{font-size:14px}.conversation-user small{font-size:11px}
+.messages{padding:24px;gap:14px}
+.bubble{font-size:13px;padding:12px 15px;border-radius:15px}
+.composer{padding:15px 18px;gap:10px}
+.composer textarea{font-size:13px;min-height:46px;padding:13px}
+.attach,.send{width:44px;height:44px;border-radius:14px}
+.admin-profile-panel{padding:23px 20px}
+.profile-panel-avatar{width:74px;height:74px;font-size:25px}
+.admin-profile-panel h3{font-size:16px}
+.profile-stat{font-size:11px;padding:11px 0}
+.profile-file-card{padding:13px;border-radius:13px}
+@media(max-width:1050px){
+ .admin-shell{grid-template-columns:190px minmax(0,1fr);padding:12px;gap:12px}
+ .workspace-grid{grid-template-columns:minmax(250px,34%) minmax(0,1fr)}
+ .admin-profile-panel{display:none}
+}
+@media(max-width:680px){
+ .admin-shell{grid-template-columns:54px minmax(0,1fr);padding:5px;gap:6px}
+ .admin-sidebar{padding:10px 4px;align-items:center}
+ .brand-row{justify-content:center;padding:0 0 18px}
+ .brand-row>div:nth-child(2),.side-label,.nav-item:not(.active){display:none}
+ .nav-item{width:40px;height:40px;padding:0;justify-content:center;font-size:0!important}
+ .nav-item span{font-size:18px}
+ .sidebar-profile{width:40px;padding:4px;justify-content:center}
+ .sidebar-profile>div:nth-child(2),.sidebar-profile .online-dot{display:none}
+ .workspace-grid{grid-template-columns:minmax(125px,34vw) minmax(0,1fr);gap:6px}
+ .people-panel{padding:8px}.panel-heading h2{font-size:11px}.panel-heading p{display:none}
+ .filter-pills{flex-direction:column}.filter{font-size:9px;padding:7px}
+ .person-row{padding:7px;gap:5px}.person-info b{font-size:9px}.person-info small{font-size:8px}
+ .delete-user{display:none}.conversation-head{padding:0 8px}.conversation-user b{font-size:10px}.conversation-user small{font-size:8px}
+ .outline-btn{font-size:8px;padding:6px}.messages{padding:8px}.bubble{font-size:10px;padding:8px}
+ .composer{padding:8px;gap:5px}.composer textarea{font-size:10px;min-height:36px}
+}
