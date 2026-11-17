@@ -6,15 +6,20 @@ A private, WhatsApp/Instagram-DM-style chat website with admin-approved accounts
 - One administrator login configured through environment variables
 - User registration with pending / approved / rejected states
 - Private conversation between each approved user and the administrator
-- Private one-to-one user-to-user messaging between approved members
+- Private one-to-one user-to-user messaging between approved members, including attachments
+- Shared file attachments in direct and group conversations, protected by participant-level download checks
 - Member directory with a New Chat entry point and real-time direct messages
 - Admin can set a temporary password for any approved member; the member must change it at next login
 - Admin-created groups with approved-member selection and group messaging
 - Group spaces appear only for members invited by the administrator
 - Direct conversations are restricted to the two approved participants
-- Modern responsive admin and user workspaces
+- Modern responsive admin and user workspaces with mobile full-screen conversation navigation
+- User theme and status preferences
+- Admin activity log for registrations, access changes, user removal and messaging
+- Rate limiting for authentication and message sending
+- GitHub Actions Node.js syntax validation on pushes and pull requests
 - Real-time message updates using Socket.IO
-- Private file attachments in admin-user conversations for Python, SQL, PBIX/PBIT, Jupyter notebooks, CSV/Excel, JSON, Parquet, documents, images, ZIP and common source files (up to 50 MB per file)
+- Private file attachments in admin-user, member-to-member and group conversations for Python, SQL, PBIX/PBIT, Jupyter notebooks, CSV/Excel, JSON, Parquet, documents, images, ZIP and common source files (up to 50 MB per file)
 - Private Supabase Storage bucket; files are downloaded only through authenticated routes
 - PostgreSQL storage for accounts, messages, file metadata, and sessions
 - Render Blueprint included for deployment
