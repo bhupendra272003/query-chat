@@ -183,3 +183,45 @@ body.modern{font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",s
 .member-profile-panel .profile-panel-note{color:#858c9d}
 @media(max-width:1050px){.admin-profile-panel,.member-profile-panel{display:none}.workspace-grid{grid-template-columns:240px minmax(300px,1fr)}.member-shell{grid-template-columns:65px 220px minmax(300px,1fr)}}
 @media(max-width:680px){.admin-shell{padding:6px;grid-template-columns:48px minmax(0,1fr);gap:6px}.admin-sidebar{padding:10px 3px}.brand-logo{width:35px;height:35px}.nav-item{width:37px;height:37px}.admin-main .topbar{height:52px;flex-basis:52px}.workspace-grid{grid-template-columns:118px minmax(260px,1fr);gap:6px}.people-panel{padding:7px}.panel-heading h2{font-size:11px}.panel-heading p{display:none}.filter-pills{flex-direction:column}.filter{font-size:9px;padding:6px}.person-row{padding:7px;gap:5px}.person-info b{font-size:9px}.person-info small{font-size:8px}.delete-user{display:none}.conversation-head{padding:0 8px}.conversation-user b{font-size:10px}.conversation-user small{font-size:8px}.outline-btn{font-size:8px;padding:6px}.messages{padding:8px}.msg{max-width:94%}.bubble{font-size:10px;padding:8px}.composer{padding:8px;gap:5px}.composer textarea{font-size:10px;min-height:36px}.member-shell{padding:6px;gap:6px;grid-template-columns:45px 125px minmax(240px,1fr)}.member-sidebar{padding:9px 3px}.member-brand{padding:0 0 16px}.member-brand .brand-logo{width:34px;height:34px}.member-nav{width:35px;height:35px;padding:0;justify-content:center;font-size:0}.member-nav span{font-size:15px}.member-profile{padding:5px;justify-content:center}.member-profile>div:nth-child(2),.member-profile i,.member-logout{display:none}.member-list-head{padding:10px 6px}.member-list-head h2{font-size:11px}.member-list-head p,.member-list-footer{display:none}.member-new{width:27px;height:27px;flex-basis:27px;font-size:17px}.member-list-scroll{padding:5px 3px}.member-conversation{padding:7px 4px;gap:5px}.member-contact-avatar{width:27px;height:27px;flex-basis:27px}.member-contact-copy b{font-size:8px}.member-contact-copy small{font-size:7px}.member-list-label{font-size:6px;padding:7px 4px}.member-chat-head{height:58px;flex-basis:58px;padding:0 6px;gap:5px}.member-chat-avatar{width:29px;height:29px;flex-basis:29px}.member-chat-title h1{font-size:10px}.member-chat-title p{font-size:7px}.member-connected{display:none}.member-chat-panel .user-messages{padding:7px}.member-chat-panel .user-composer{padding:7px 5px;gap:4px}.member-chat-panel .user-composer textarea{font-size:9px;min-height:34px}.member-chat-panel .attach,.member-chat-panel .send{width:29px;height:29px}}
+
+/* Mobile layout repair: keep all three member columns inside the viewport */
+@media(max-width:1050px){
+ .member-shell{width:100%;max-width:none;min-width:0;overflow:hidden;grid-template-columns:58px minmax(145px,30vw) minmax(0,1fr);gap:7px;padding:7px}
+ .member-sidebar,.member-list-panel,.member-chat-panel{min-width:0;width:auto}
+ .member-brand{min-width:0;justify-content:center}.member-brand>div:nth-child(2){display:none}
+ .member-nav{min-width:0;max-width:100%;overflow:hidden}
+ .member-list-head{min-width:0}.member-list-head>div{min-width:0}
+ .member-conversation{min-width:0;width:100%}.member-contact-copy{min-width:0;overflow:hidden}
+ .member-chat-panel{min-width:0}.member-chat-head,.member-chat-title{min-width:0}
+ .member-chat-title h1,.member-chat-title p{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+ .member-profile-panel{display:none}
+}
+@media(max-width:680px){
+ .member-shell{grid-template-columns:48px minmax(112px,32vw) minmax(0,1fr);gap:5px;padding:5px}
+ .member-sidebar{padding:9px 3px;min-width:0}
+ .member-brand{padding:0 0 15px}.member-brand .brand-logo{width:34px;height:34px}
+ .member-nav{width:100%;height:37px;padding:0;justify-content:center;font-size:0}
+ .member-nav span{font-size:15px}
+ .member-profile{width:100%;padding:5px;justify-content:center;min-width:0}
+ .member-profile>div:nth-child(2),.member-profile i,.member-logout{display:none}
+ .member-list-panel{min-width:0;padding:0}
+ .member-list-head{padding:10px 6px;gap:4px}
+ .member-list-head h2{font-size:11px}.member-list-head p,.member-list-footer{display:none}
+ .member-new{width:27px;height:27px;flex:0 0 27px;font-size:17px}
+ .member-list-scroll{padding:5px 3px;min-width:0}
+ .member-conversation{padding:7px 4px;gap:5px}
+ .member-contact-avatar{width:27px;height:27px;flex:0 0 27px}
+ .member-contact-copy b{font-size:8px}.member-contact-copy small{font-size:7px}
+ .member-list-label{font-size:6px;padding:7px 4px}
+ .member-chat-head{height:58px;flex:0 0 58px;padding:0 6px;gap:5px}
+ .member-chat-avatar{width:29px;height:29px;flex:0 0 29px}
+ .member-chat-title h1{font-size:10px}.member-chat-title p{font-size:7px}
+ .member-connected{display:none}
+ .member-chat-panel .user-messages{padding:7px}
+ .member-chat-panel .user-composer{padding:7px 5px;gap:4px}
+ .member-chat-panel .user-composer textarea{font-size:9px;min-width:0;min-height:34px}
+ .member-chat-panel .attach,.member-chat-panel .send{width:29px;height:29px;flex:0 0 29px}
+}
+.admin-page .messages{background-color:#171a20!important;background-image:radial-gradient(#343743 .7px,transparent .7px)!important;background-size:20px 20px!important}
+.admin-page .msg.admin .bubble{background:linear-gradient(120deg,#6045d6,#805cf7)!important;color:#fff!important}
+.admin-page .msg.user .bubble{background:#252932!important;color:#f0f1f7!important;border:1px solid #343945!important}
